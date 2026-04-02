@@ -1,73 +1,180 @@
-# React + TypeScript + Vite
+# Memora - 시간을 쌓는 공간
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+> "언어를 배우는 앱이 아니라, 시간을 쌓는 공간"
 
-Currently, two official plugins are available:
+Memora는 감정 UX 기반의 일본어 학습 웹앱입니다. 기존 언어 학습 앱의 게임화/속도 중심 접근 대신, **고양이 캐릭터와의 관계**와 **연상 기억법**을 통해 꾸준히 돌아오고 싶은 학습 경험을 제공합니다.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+---
 
-## React Compiler
+## 프로젝트 개요
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+### 배경
+- 일본어를 처음 배우는 학습자를 위한 맞춤형 앱
+- 시중 앱들의 공통적인 한계(밝은 컬러, 게임화, 감정 몰입 없음)를 극복
+- **연상 기억법 + 반복 학습**에 최적화된 구조
 
-## Expanding the ESLint configuration
+### 차별화 전략
+| 기존 언어 앱 | Memora |
+|-------------|--------|
+| 밝음 (고채도, 게임풍) | **조용함** (저채도, 감성) |
+| 게임 (포인트, 랭킹) | **관계** (고양이 동반자) |
+| 속도 (빠른 학습 강조) | **기억** (연상 + 반복) |
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+### 디자인 키워드
+`MUJI` `Notion` `일기` `감성 + 절제 + 여백`
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+---
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+## 주요 기능
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+### 1. 홈 - 고양이의 방
+- 시간대별 분위기 변화 (아침/낮/저녁/밤 4단계)
+- 고양이 캐릭터와 인터랙션
+- 출석 스트릭 & 학습 진행률 표시
+
+### 2. 학습 - 같이 하기
+- 히라가나 챕터별 학습 (あ행 ~ た행, 20자)
+- **연상 스토리 카드**: 각 글자에 기억하기 쉬운 이야기 연결
+- **퀴즈 시스템**: 글자→소리, 소리→글자 매칭
+- 챕터 잠금/해금 시스템 (차근차근 진행)
+
+### 3. 대화 - 복습하기
+- 고양이와 **채팅 형식**으로 복습
+- 배운 글자 기반 자동 출제
+- 간격 반복(Spaced Repetition) 기반 복습 추천
+
+### 4. 프로필 - 나의 기록
+- 출석 달력 (월별 뷰)
+- 학습 통계 (연속 출석, 배운 글자, 완료 챕터)
+- 마스터한 글자 목록
+- 고양이 이름 설정
+
+### 감정 UX 시스템
+| 트리거 | 고양이 반응 |
+|--------|------------|
+| 앱 첫 접속 | "어서와, 오늘도 같이 하자" |
+| 정답 | 고개 끄덕 + 꼬리 흔들기 |
+| 오답 | 같이 갸우뚱 + "다시 해볼까?" |
+| 연속 정답 | "대단해!" |
+| 1일 미접속 | "어제 안 왔네..." |
+| 3일+ 미접속 | "왔구나!" + 달려옴 |
+
+---
+
+## 기술 스택
+
+| 영역 | 기술 |
+|------|------|
+| **프레임워크** | Vite + React 18 |
+| **언어** | TypeScript |
+| **라우팅** | React Router v6 |
+| **스타일링** | Tailwind CSS v4 |
+| **애니메이션** | Framer Motion |
+| **상태 관리** | Zustand (persist middleware) |
+| **데이터 저장** | LocalStorage (서버리스) |
+| **배포** | Vercel (예정) / PWA 지원 예정 |
+
+### 아키텍처
+
+```
+src/
+├── pages/                  # 페이지 컴포넌트 (4개 메인 + Chapter)
+│   ├── Home.tsx           # 홈 (고양이의 방)
+│   ├── Learn.tsx          # 학습 챕터 목록
+│   ├── Chapter.tsx        # 개별 챕터 학습 플로우
+│   ├── Review.tsx         # 대화형 복습
+│   └── Profile.tsx        # 프로필 & 통계
+│
+├── components/
+│   ├── cat/               # 고양이 캐릭터 (SVG + 감정 시스템)
+│   ├── learn/             # 학습 UI (StoryCard, QuizCard, ProgressBar)
+│   └── ui/                # 공통 UI (TabBar)
+│
+├── data/
+│   └── hiragana.ts        # 히라가나 20자 데이터 (글자, 발음, 연상 스토리)
+│
+├── stores/                # Zustand 상태 관리
+│   ├── progressStore.ts   # 학습 진도 + 간격 반복
+│   ├── catStore.ts        # 고양이 감정 + 대화
+│   └── streakStore.ts     # 출석 스트릭
+│
+└── hooks/
+    └── useTimeOfDay.ts    # 시간대 감지 (아침/낮/저녁/밤)
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+### 상태 관리 설계
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+- **progressStore**: 글자별 학습 여부, 정답/오답 수, 간격 반복 스케줄
+- **catStore**: 고양이 감정 상태, 대화 메시지, 방문 기록 기반 인사
+- **streakStore**: 연속 출석, 방문 날짜 기록, 달력 데이터
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+모든 상태는 `zustand/persist`를 통해 LocalStorage에 자동 저장됩니다.
+
+---
+
+## 실행 방법
+
+```bash
+# 의존성 설치
+npm install
+
+# 개발 서버 실행
+npm run dev
+
+# 프로덕션 빌드
+npm run build
+
+# 빌드 미리보기
+npm run preview
 ```
+
+> 모바일 최적화 (430px 기준) - 브라우저 개발자 도구에서 모바일 뷰로 확인 권장
+
+---
+
+## 학습 데이터 구조
+
+현재 1차 MVP에 포함된 히라가나:
+
+| 챕터 | 글자 | 범위 |
+|------|------|------|
+| 1. あ행 | あいうえお | 5개 모음 |
+| 2. か행 | かきくけこ | 자음+모음 |
+| 3. さ행 | さしすせそ | 자음+모음 |
+| 4. た행 | たちつてと | 자음+모음 |
+
+각 글자에는 한국어 발음, 로마자, **연상 기억 스토리**, 획순 설명이 포함되어 있습니다.
+
+---
+
+## 향후 계획
+
+### 2차 런칭 예정
+- [ ] 히라가나 완성 (な~わ행 + 탁음/반탁음)
+- [ ] 카타카나 학습
+- [ ] 기초 회화 표현 (인사, 자기소개)
+- [ ] PWA 설정 (홈 화면 추가, 오프라인)
+- [ ] 네이티브 발음 오디오
+
+### 장기 계획
+- [ ] 서버 연동 (데이터 백업)
+- [ ] 고양이 커스터마이징 (옷, 악세서리)
+- [ ] 추가 캐릭터
+- [ ] 알림/리마인더
+- [ ] 실전 대화 시뮬레이션
+
+---
+
+## 컬러 팔레트 (조정 예정)
+
+현재 기본 설정:
+
+| 용도 | 색상 | 코드 |
+|------|------|------|
+| Primary | 딥 네이비 | `#1B2838` |
+| Secondary | 그레이 블루 | `#6B7B8D` |
+| Accent | 크림 베이지 | `#F5E6D3` |
+| Warm Accent | 소프트 코랄 | `#E8A598` |
+| Background | 웜 화이트 | `#FAF7F2` |
+
+> 컬러 변경 시 `src/index.css`의 `@theme` 블록 수정
