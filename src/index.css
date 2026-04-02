@@ -34,17 +34,13 @@ html, body {
   font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-color: var(--color-bg-warm);
+  background-color: #1a1a2e;
   color: var(--color-navy);
   overflow-x: hidden;
 }
 
 #root {
   height: 100%;
-  max-width: 430px;
-  margin: 0 auto;
-  position: relative;
-  background-color: var(--color-bg-warm);
 }
 
 /* Scrollbar styling */
