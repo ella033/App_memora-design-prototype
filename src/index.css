@@ -1,0 +1,61 @@
+@import "tailwindcss";
+
+@theme {
+  /* Memora Color System */
+  --color-navy: #1B2838;
+  --color-navy-light: #243447;
+  --color-grey-blue: #6B7B8D;
+  --color-grey-blue-light: #8A9AAC;
+  --color-cream: #F5E6D3;
+  --color-cream-light: #FFF5EB;
+  --color-coral: #E8A598;
+  --color-coral-light: #F0BEB3;
+  --color-bg-dark: #2A2A35;
+  --color-bg-warm: #FAF7F2;
+  --color-bg-card: #FFFFFF;
+
+  /* Time-based backgrounds */
+  --color-morning-sky: #E8D5C0;
+  --color-afternoon-sky: #D4C4B0;
+  --color-evening-sky: #4A5568;
+  --color-night-sky: #1A1A2E;
+
+  --font-sans: 'Pretendard', system-ui, -apple-system, sans-serif;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  height: 100%;
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: var(--color-bg-warm);
+  color: var(--color-navy);
+  overflow-x: hidden;
+}
+
+#root {
+  height: 100%;
+  max-width: 430px;
+  margin: 0 auto;
+  position: relative;
+  background-color: var(--color-bg-warm);
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 0;
+  display: none;
+}
+
+/* Safe area for mobile */
+@supports (padding-bottom: env(safe-area-inset-bottom)) {
+  .tab-bar {
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+}
